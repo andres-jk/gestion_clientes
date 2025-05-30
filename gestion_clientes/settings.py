@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-m#d9$b&2m(2&@w=^2h_1-g-u8r2o(t9x7p&w=g_c&x2l!0d8q1
 # SECURITY WARNING: don't run with debug turned on in production!
 # Cuando vayas a desplegar a internet, CAMBIA esto a False
 # Cambia esto a False para producción
-DEBUG = False
+DEBUG = true
 
 # Si DEBUG es False, DEBES listar los hosts permitidos aquí.
 # Para desarrollo local: '127.0.0.1', 'localhost'
