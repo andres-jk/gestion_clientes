@@ -1,0 +1,33 @@
+{% extends 'clientes/base.html' %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+    <h1>{{ titulo }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+<div class="form-group">
+{{ field.label_tag }}
+{{ field }}
+{% if field.help_text %}
+<small class="form-text text-muted">{{ field.help_text }}</small>
+{% endif %}
+{% for error in field.errors %}
+<span style="color: red; font-size: 0.9em;">{{ error }}</span>
+{% endfor %}
+</div>
+{% endfor %}
+{% if form.non_field_errors %}
+<div style="color: red; margin-bottom: 10px;">
+{% for error in form.non_field_errors %}
+<p>{{ error }}</p>
+{% endfor %}
+</div>
+{% endif %}
+<div class="form-actions">
+<button type="submit" class="btn">Guardar</button>
+<a href="{% url 'lista_clientes' %}" class="btn btn-secondary">Cancelar</a>
+</div>
+</form>
+{% endblock %}

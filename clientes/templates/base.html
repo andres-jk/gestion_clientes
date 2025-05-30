@@ -1,0 +1,201 @@
+{# clientes/templates/clientes/base.html #}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestión de Clientes{% endblock %}</title>
+    
+    <style>
+        /* Colores del Logo */
+        :root {
+            --color-negro: #000000;
+            --color-amarillo: #FFE000;
+            --color-blanco: #ffffff;
+            --color-gris-claro-fondo: #222222; /* Mantenemos un gris claro para el fondo general */
+            --color-texto-oscuro: #333333;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--color-gris-claro-fondo); /* Fondo general de la página */
+            margin: 0;
+            padding: 0;
+            color: var(--color-texto-oscuro);
+        }
+
+        .container {
+            width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: var(--color-blanco); /* Contenedor blanco, como el logo */
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(250, 225, 5, 0.678); /* Sombra más oscura, como la del logo */
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--color-negro); /* Títulos en negro para alto contraste */
+            font-weight: bold; /* Darle más fuerza al título */
+            text-transform: uppercase; /* Para un look más moderno */
+            margin-bottom: 25px;
+        }
+
+        form {
+            text-align: center; /* Alinea los elementos del formulario al centro si son inline-block */
+        }
+
+        /* Estilos generales para inputs y textareas */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        textarea,
+        .form-control {
+            width: 100%;
+            padding: 12px; /* Un poco más de padding */
+            margin: 8px 0; /* Un poco más de margen vertical */
+            display: inline-block;
+            border: 1px solid #cccccc; /* Borde gris más neutro */
+            border-radius: 5px; /* Bordes ligeramente más suaves */
+            box-sizing: border-box;
+            font-size: 16px; /* Aumentar tamaño de fuente para legibilidad */
+        }
+        
+        input[type="submit"],
+        .btn {
+            background-color: var(--color-negro); /* Botones principales en negro */
+            color: var(--color-amarillo); /* Texto de botón en amarillo para contraste */
+            border: none;
+            cursor: pointer;
+            padding: 12px 25px; /* Mayor padding para botones */
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            width: auto;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase; /* Para un look más moderno */
+            transition: background-color 0.3s ease; /* Transición suave para el hover */
+        }
+
+        input[type="submit"]:hover,
+        .btn:hover {
+            background-color: #333333; /* Un negro ligeramente más claro al pasar el ratón */
+            color: var(--color-amarillo); /* Mantener el texto amarillo */
+        }
+
+        p {
+            text-align: center;
+            margin-top: 25px; /* Más espacio superior */
+            font-size: 14px;
+        }
+
+        a {
+            color: var(--color-negro); /* Enlaces en negro para que coincidan con el logo */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: var(--color-amarillo); /* Enlaces en amarillo al pasar el ratón */
+        }
+
+        /* Estilos para mensajes flash */
+        .flash-messages {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            list-style: none;
+            padding-left: 15px;
+            font-weight: bold;
+        }
+        .flash-messages li {
+            margin: 0;
+            line-height: 1.5; /* Espaciado de línea para legibilidad */
+        }
+        .flash-messages.info { background-color: #e0f7fa; border: 1px solid #00bcd4; color: #00796b; } /* Mantener estos colores estándar */
+        .flash-messages.success { background-color: #e8f5e9; border: 1px solid #4caf50; color: #2e7d32; }
+        .flash-messages.warning { background-color: #fff3e0; border: 1px solid #ff9800; color: #ef6c00; }
+        .flash-messages.error { background-color: #ffebee; border: 1px solid #f44336; color: #c62828; }
+
+        /* Estilos para grupos de formulario (labels e inputs) */
+        .form-group {
+            margin-bottom: 20px; /* Más espacio entre grupos de formulario */
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px; /* Más espacio debajo del label */
+            font-weight: bold;
+            color: var(--color-texto-oscuro);
+            font-size: 15px;
+        }
+        .form-actions {
+            margin-top: 30px; /* Más espacio superior para el contenedor de acciones */
+            text-align: center;
+        }
+
+        /* Estilos para la barra de navegación */
+        .nav-bar {
+            background-color: var(--color-negro); /* Barra de navegación en negro */
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-bar span {
+            font-weight: bold;
+            color: var(--color-amarillo); /* Texto del saludo en amarillo */
+            margin-right: 20px;
+        }
+        .nav-bar a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: var(--color-blanco); /* Enlaces de navegación en blanco */
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .nav-bar a:hover {
+            background-color: var(--color-amarillo); /* Fondo amarillo al pasar el ratón */
+            color: var(--color-negro); /* Texto negro al pasar el ratón */
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-bar">
+            <div> {# Contenedor para el saludo y enlaces #}
+                {% if user.is_authenticated %}
+                    <span>Hola, {{ user.username }}</span>
+                    <a href="{% url 'clientes:lista_clientes' %}">Clientes</a>
+                {% endif %}
+            </div>
+           <div> {# Contenedor para el botón de login/logout #}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}">Cerrar Sesión</a>
+                {% elif request.resolver_match.url_name != 'login' %} {# <--- NUEVA CONDICIÓN AQUÍ #}
+                    <a href="{% url 'login' %}">Iniciar Sesión</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <ul class="flash-messages {{ message.tags }}">
+                    <li>{{ message }}</li>
+                </ul>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+            {# Contenido específico de la página #}
+        {% endblock content %}
+    </div>
+</body>
+</html>

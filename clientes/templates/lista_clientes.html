@@ -1,0 +1,41 @@
+{% extends 'clientes/base.html' %}
+
+{% block title %}Lista de Clientes{% endblock %}
+
+{% block content %}
+    <h1>Lista de Clientes</h1>
+    <a href="{% url 'agregar_cliente' %}" class="btn">Agregar Nuevo Cliente</a>
+
+    {% if clientes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                    <tr>
+                        <td>{{ cliente.nombre }}</td>
+                        <td>{{ cliente.apellido }}</td>
+                        <td>{{ cliente.email }}</td>
+                        <td>{{ cliente.telefono|default_if_none:"N/A" }}</td>
+                        <td>
+                            <a href="{% url 'editar_cliente' cliente.pk %}" class="btn btn-secondary">Editar</a>
+                            <form action="{% url 'eliminar_cliente' cliente.pk %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar a {{ cliente.nombre }} {{ cliente.apellido }}?');">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay clientes registrados aún.</p>
+    {% endif %}
+{% endblock %}

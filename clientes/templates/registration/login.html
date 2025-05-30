@@ -1,0 +1,46 @@
+{# C:\Users\andre\mi_entorno_clientes\gestion_clientes\templates\registration\login.html #}
+{% extends 'base.html' %} {# ¡MUY IMPORTANTE QUE ESTA LÍNEA ESTÉ CORRECTA! #}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+   <h1> Iniciar Sesión</h1>
+
+    {% if form.errors %}
+        <ul class="flash-messages error">
+            <li>Tu nombre de usuario y/o contraseña son incorrectos. Por favor, inténtalo de nuevo.</li>
+        </ul>
+    {% endif %}
+
+    {% if next %}
+        {% if user.is_authenticated %}
+            <ul class="flash-messages info">
+                <li>Tu cuenta no tiene acceso a esta página. Para proceder, por favor inicia sesión con una cuenta que tenga acceso.</li>
+            </ul>
+        {% else %}
+            <ul class="flash-messages info">
+                <li>Por favor, inicia sesión para ver esta página.</li>
+            </ul>
+        {% endif %}
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Nombre de Usuario:</label>
+            {{ form.username }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.password.id_for_label }}">Contraseña:</label>
+            {{ form.password }}
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn">Iniciar Sesión</button>
+            <input type="hidden" name="next" value="{{ next }}">
+        </div>
+    </form>
+
+    {# Opcional: Enlace para recuperar contraseña o registrarse #}
+    <p>¿Olvidaste tu contraseña? <a href="#">Haz clic aquí</a> </p>
+    <p>¿No tienes una cuenta? <a href="#">Regístrate aquí</a> </p>
+{% endblock %}

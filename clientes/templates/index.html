@@ -1,0 +1,13 @@
+{% extends 'clientes/base.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+    <h1>Bienvenido al Sistema de Gestión de Clientes Multiandamios</h1>
+    <p>Utiliza la barra de navegación para acceder a las diferentes secciones del sistema.</p>
+    <p>Aquí puedes gestionar toda la información de tus clientes, productos, obras y alquileres.</p>
+
+    {% if not user.is_authenticated %}
+        <p>Por favor, <a href="{% url 'login' %}">inicia sesión</a> para acceder a las funcionalidades.</p>
+    {% endif %}
+{% endblock %}
