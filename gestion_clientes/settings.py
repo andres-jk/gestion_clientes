@@ -97,16 +97,17 @@ WSGI_APPLICATION = 'gestion_clientes.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_clientes_django', # Esto lo configurarás en PythonAnywhere
-        'USER': 'django_user',       # Esto lo configurarás en PythonAnywhere
-        'PASSWORD': 'tu_contrasena_segura', # Esto lo configurarás en PythonAnywhere
-        'HOST': 'localhost',         # Para la DB de PythonAnywhere, este suele ser el host
+        'NAME': 'andresjk$MULTIANDAMIOS', # Esto lo configurarás en PythonAnywhere
+        'USER': 'andresjk',       # Esto lo configurarás en PythonAnywhere
+        'PASSWORD': 'Aa280425_', # Esto lo configurarás en PythonAnywhere
+        'HOST': 'andresjk.mysql.pythonanywhere-services.com',         # Para la DB de PythonAnywhere, este suele ser el host
         'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        }
+    }
     }
 }
+
 
 
 # Password validation
