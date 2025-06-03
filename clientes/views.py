@@ -2,7 +2,7 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Cliente
-from .forms import ClienteForm
+from .forms import CustomUserCreationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required # Para proteger las vistas
 
@@ -16,13 +16,13 @@ def lista_clientes(request):
 @login_required
 def agregar_cliente(request):
     if request.method == 'POST':
-        form = ClienteForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, 'Cliente agregado exitosamente!')
             return redirect('lista_clientes')
     else:
-        form = ClienteForm()
+        form = CustomUserCreationForm()
     return render(request, 'clientes/form_cliente.html', {'form': form, 'titulo': 'Agregar Cliente'})
 
 # Vista para editar un cliente existente (requiere login)
@@ -30,13 +30,13 @@ def agregar_cliente(request):
 def editar_cliente(request, pk):
     cliente = get_object_or_404(Cliente, pk=pk)
     if request.method == 'POST':
-        form = ClienteForm(request.POST, instance=cliente)
+        form = CustomUserCreationForm(request.POST, instance=cliente)
         if form.is_valid():
             form.save()
             messages.success(request, 'Cliente actualizado exitosamente!')
             return redirect('lista_clientes')
     else:
-        form = ClienteForm(instance=cliente)
+        form = CustomUserCreationForm(instance=cliente)
     return render(request, 'clientes/form_cliente.html', {'form': form, 'titulo': 'Editar Cliente'})
 
 # Vista para eliminar un cliente (requiere login)
