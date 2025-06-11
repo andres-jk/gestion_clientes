@@ -12,35 +12,7 @@ SECRET_KEY = 'django-insecure-z_i!v-b^h*t&7_b-i17!b@=n#v!l-l(v5w$8t7-&j9e7#0'
 # Modo debug (no usar en producción)
 DEBUG = True
 
-<<<<<<< HEAD
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', '192.168.1.7']
-=======
-# SECURITY WARNING: keep the secret key used in production secret!
-# ¡IMPORTANTE! Para producción, esto DEBE ser una variable de entorno
-# Ejemplo en producción: SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
-# Para desarrollo, puedes dejar esta, pero ¡CAMBIALA por una fuerte en producción!
-SECRET_KEY = 'django-insecure-m#d9$b&2m(2&@w=^2h_1-g-u8r2o(t9x7p&w=g_c&x2l!0d8q1q' # ### CAMBIAR por una CLAVE SECRETA FUERTE Y DIFERENTE ###
-
-
-# SECURITY WARNING: don't run with debug turned on in production!
-# Cuando vayas a desplegar a internet, CAMBIA esto a False
-# Cambia esto a False para producción
-DEBUG = true
-
-# Si DEBUG es False, DEBES listar los hosts permitidos aquí.
-# Para desarrollo local: '127.0.0.1', 'localhost'
-# Para producción: 'tudominio.com', 'www.tudominio.com', 'tu_ip_del_servidor'
-# gestion_clientes/settings.py
-
-# Cuando despliegues, PythonAnywhere te dará un dominio como 'tucuenta.pythonanywhere.com'
-# Añádelo aquí después de crear la app web.
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.pythonanywhere.com'] # Añade el wildcard para facilitar, luego se refina
-# Cuando cambies DEBUG a False, deberías añadir tu dominio real aquí.
-# Por ejemplo: ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'tudominio.com', 'www.tudominio.com']
-
-
-# Application definition
->>>>>>> 276fd6a0d95b26d231954188a41a344a63ffc318
 
 # Aplicaciones instaladas
 INSTALLED_APPS = [
@@ -91,32 +63,12 @@ WSGI_APPLICATION = 'gestion_clientes.wsgi.application'
 # Configuración de base de datos (SQLite por defecto)
 DATABASES = {
     'default': {
-<<<<<<< HEAD
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
 # Validadores de contraseñas
-=======
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'andresjk$MULTIANDAMIOS', # Esto lo configurarás en PythonAnywhere
-        'USER': 'andresjk',       # Esto lo configurarás en PythonAnywhere
-        'PASSWORD': 'Aa280425_', # Esto lo configurarás en PythonAnywhere
-        'HOST': 'andresjk.mysql.pythonanywhere-services.com',         # Para la DB de PythonAnywhere, este suele ser el host
-        'PORT': '3306',
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-    }
-    }
-}
-
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
->>>>>>> 276fd6a0d95b26d231954188a41a344a63ffc318
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -161,9 +113,6 @@ MESSAGE_TAGS = {
     messages.WARNING: 'warning',
     messages.ERROR: 'error',
 }
-<<<<<<< HEAD
 
 # Email backend para desarrollo: muestra los emails en la consola
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-=======
->>>>>>> 276fd6a0d95b26d231954188a41a344a63ffc318
