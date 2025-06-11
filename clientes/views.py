@@ -583,7 +583,10 @@ def recibo_obra_view(request, pedido_id):
                 estado = request.POST.get(f'estado_producto_{prod.id}', 'completo')
                 observaciones = request.POST.get(f'observaciones_producto_{prod.id}', '')
                 from .models import ReciboObraProducto, Devolucion, DevolucionProducto, Producto
-                producto_obj = Producto.objects.get(nombre=prod.nombre)
+                # Buscar el producto por nombre, pero tomar el primero si hay duplicados
+                producto_obj = Producto.objects.filter(nombre=prod.nombre).first()
+                if not producto_obj:
+                    continue  # Si no existe, omitir
                 robj, _ = ReciboObraProducto.objects.get_or_create(
                     recibo_obra=recibo,
                     producto=producto_obj,
@@ -596,115 +599,4 @@ def recibo_obra_view(request, pedido_id):
                 # Si el producto fue devuelto (dañado o con daños), registrar devolución y actualizar inventario
                 if estado in ['danado', 'con_danios']:
                     productos_devueltos.append((producto_obj, prod.cantidad, estado))
-            # Registrar devolución si hay productos devueltos
-            if productos_devueltos:
-                devolucion, _ = Devolucion.objects.get_or_create(pedido=pedido)
-                for producto_obj, cantidad, estado in productos_devueltos:
-                    # Evitar duplicados: actualiza si ya existe para este producto y devolución
-                    devprod, created = DevolucionProducto.objects.get_or_create(
-                        devolucion=devolucion,
-                        producto=producto_obj,
-                        defaults={'cantidad': cantidad, 'estado': estado}
-                    )
-                    if not created:
-                        devprod.cantidad += cantidad
-                        devprod.estado = estado  # Actualiza estado al último
-                        devprod.save()
-                    # Actualizar inventario
-                    producto_obj.stock += cantidad
-                    producto_obj.save()
-            messages.success(request, 'Recibo de obra guardado correctamente.')
-            return redirect('clientes:recibo_obra', pedido_id=pedido.id)
-        else:
-            messages.error(request, 'Por favor corrige los errores en el formulario.')
-    else:
-        form = ReciboObraForm(instance=recibo)
-    return render(request, 'clientes/recibo_obra.html', {'form': form, 'pedido': pedido, 'recibo': recibo})
-
-def recibo_obra_pdf(request, pedido_id):
-    from django.template.loader import get_template
-    from xhtml2pdf import pisa
-    import io
-    pedido = Pedido.objects.get(id=pedido_id)
-    recibo = ReciboObra.objects.get(pedido=pedido)
-    template = get_template('clientes/recibo_obra_pdf.html')
-    context = {'pedido': pedido, 'recibo': recibo}
-    html = template.render(context)
-    result = io.BytesIO()
-    pisa_status = pisa.CreatePDF(html, dest=result)
-    if pisa_status.err:
-        return HttpResponse('Error al generar el PDF', status=500)
-    result.seek(0)
-    from django.http import FileResponse
-    return FileResponse(result, as_attachment=True, filename=f'ReciboObra_{pedido.id}.pdf')
-
-def registrar_devolucion(request, pedido_id):
-    pedido = Pedido.objects.get(id=pedido_id)
-    DevolucionProductoFormSet = modelformset_factory(DevolucionProducto, form=DevolucionProductoForm, extra=0, can_delete=False)
-    # Crear diccionario de cantidades máximas por producto entregado
-    productos_pedido = list(pedido.productos.all())
-    max_cantidades = {prod.producto.id if hasattr(prod, 'producto') else prod.nombre: prod.cantidad for prod in productos_pedido}
-    if request.method == 'POST':
-        devolucion_form = DevolucionForm(request.POST)
-        formset = DevolucionProductoFormSet(request.POST, queryset=DevolucionProducto.objects.none())
-        if devolucion_form.is_valid() and formset.is_valid():
-            devolucion = devolucion_form.save(commit=False)
-            devolucion.pedido = pedido
-            devolucion.save()
-            for form in formset:
-                devolucion_producto = form.save(commit=False)
-                devolucion_producto.devolucion = devolucion
-                # Validación: no permitir devolver más de lo entregado
-                max_cantidad = max_cantidades.get(devolucion_producto.producto.id, 0)
-                if devolucion_producto.cantidad > max_cantidad:
-                    devolucion.delete()  # Borra la devolución incompleta
-                    form.add_error('cantidad', f'No puede devolver más de lo entregado ({max_cantidad}).')
-                    return render(request, 'clientes/registrar_devolucion.html', {
-                        'devolucion_form': devolucion_form,
-                        'formset': formset,
-                        'pedido': pedido,
-                        'max_cantidades': max_cantidades,
-                        'error': f'No puede devolver más de lo entregado para {devolucion_producto.producto.nombre}.'
-                    })
-                # Actualiza inventario
-                producto = devolucion_producto.producto
-                producto.stock += devolucion_producto.cantidad
-                producto.save()
-                devolucion_producto.save()
-            return redirect('clientes:devolucion', pedido_id=pedido.id)
-    else:
-        devolucion_form = DevolucionForm()
-        # Prepara productos del pedido para devolución
-        initial = [
-            {'producto': Producto.objects.get(nombre=prod.nombre), 'cantidad': prod.cantidad, 'estado': ''}
-            for prod in productos_pedido
-        ]
-        formset = DevolucionProductoFormSet(queryset=DevolucionProducto.objects.none(), initial=initial)
-    return render(request, 'clientes/registrar_devolucion.html', {
-        'devolucion_form': devolucion_form,
-        'formset': formset,
-        'pedido': pedido,
-        'max_cantidades': max_cantidades,
-    })
-
-def devolucion_view(request, pedido_id):
-    pedido = Pedido.objects.get(id=pedido_id)
-    devoluciones = Devolucion.objects.filter(pedido=pedido)
-    return render(request, 'clientes/devolucion.html', {'pedido': pedido, 'devoluciones': devoluciones})
-
-def devolucion_pdf(request, pedido_id):
-    from django.template.loader import get_template
-    from xhtml2pdf import pisa
-    import io
-    pedido = Pedido.objects.get(id=pedido_id)
-    devoluciones = Devolucion.objects.filter(pedido=pedido)
-    template = get_template('clientes/devolucion_pdf.html')
-    context = {'pedido': pedido, 'devoluciones': devoluciones}
-    html = template.render(context)
-    result = io.BytesIO()
-    pisa_status = pisa.CreatePDF(html, dest=result)
-    if pisa_status.err:
-        return HttpResponse('Error al generar el PDF', status=500)
-    result.seek(0)
-    from django.http import FileResponse
-    return FileResponse(result, as_attachment=True, filename=f'Devolucion_{pedido.id}.pdf')
+            # Registrar devolución si hay productos de
