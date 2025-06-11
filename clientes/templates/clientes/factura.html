@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load clientes_tags %}
+{% block title %}Factura{% endblock %}
+{% block content %}
+<div class="main-card mt-5" style="max-width:700px;margin:0 auto;">
+    <h2 style="color:#ffe600;">Factura #{{ factura.id }} - ID Cliente: {{ factura.pedido.usuario.cliente.dni }}</h2>
+    <p><strong>Fecha:</strong> {{ factura.fecha|date:"d/m/Y H:i" }}</p>
+    <p><strong>Cliente:</strong> {{ factura.pedido.usuario.first_name }} {{ factura.pedido.usuario.cliente.apellido }}</p>
+    <p><strong>ID (DNI):</strong> {{ factura.pedido.usuario.cliente.dni }}</p>
+    <p><strong>Ubicación:</strong> {{ factura.pedido.ubicacion }}</p>
+    <p><strong>Dirección de entrega:</strong> {{ direccion_obra }}</p>
+    <p><strong>Método de pago:</strong> {{ factura.pedido.metodo_pago }}</p>
+    <p><strong>Estado de pago:</strong>
+        <span class="{% if factura.estado_pago == 'pagado' %}estado-pagado{% else %}estado-pendiente{% endif %}">
+        {{ factura.estado_pago|title }}
+    </span>
+        {% if user.is_staff or user.is_superuser %}
+        <form method="post" action="{% url 'clientes:cambiar_estado_pago_factura' factura.pedido.id %}" style="display:inline;">
+            {% csrf_token %}
+            <select name="estado_pago" style="margin-left:1em;">
+                <option value="pendiente" {% if factura.estado_pago == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                <option value="pagado" {% if factura.estado_pago == 'pagado' %}selected{% endif %}>Pagado</option>
+            </select>
+            <button type="submit" class="btn btn-secondary btn-sm">Actualizar</button>
+        </form>
+        {% endif %}
+    </p>
+    <div style="margin-bottom:1.2rem;">
+        <a href="{% url 'clientes:factura' factura.pedido.id %}?enviar=1" class="btn btn-primary">Enviar factura por correo</a>
+    </div>
+    <hr>
+    <h4>Detalle de compra</h4>
+    <table class="table table-bordered" style="background:#fff;">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Tipo de renta</th>
+                <th>Duración</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prod in productos_factura %}
+            <tr>
+                <td>{{ prod.nombre }}</td>
+                <td>{{ prod.cantidad }}</td>
+                <td>{{ prod.tipo_renta|title }}</td>
+                <td>
+                    {{ prod.duracion }}
+                    {% if prod.tipo_renta == "semana" %}
+                        {% if prod.duracion|add:"0" > 1 %}semanas{% else %}semana{% endif %}
+                    {% else %}
+                        {% if prod.duracion|add:"0" > 1 %}meses{% else %}mes{% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div style="margin-top:1.5rem;">
+        <strong>Total a pagar:</strong>
+        $ {{ factura.total|floatformat:0|miles_colombianos }}  COP
+    </div>
+    {% if factura.detalle %}
+    <div class="observaciones" style="margin-top:1.2rem;">
+        <strong>Detalle/Observaciones:</strong>
+        <div>{{ factura.detalle }}</div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

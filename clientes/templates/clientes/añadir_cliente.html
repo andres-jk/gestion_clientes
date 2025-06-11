@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Añadir Nuevo Cliente{% endblock %}
+
+{% block content %}
+<div class="main-card mt-5" style="padding: 2.5rem 2rem;">
+    <h2 style="margin-bottom: 2.2rem; text-align:center; font-size:2.2em; letter-spacing:1px;">Añadir Nuevo Cliente</h2>
+    <form method="post" action="{% url 'clientes:crear_cliente' %}" style="max-width: 600px; margin: 0 auto;">
+        {% csrf_token %}
+        <div style="margin-bottom: 1.5rem;">
+            <label for="dni" style="display: block; font-weight: bold; color: #ffe600; margin-bottom: 0.5rem;">ID (DNI):</label>
+            <input type="text" id="dni" name="dni" required style="width: 100%; padding: 0.8rem; border: 2px solid #ffd600; border-radius: 0.5rem; background: #232323; color: #ffe600;">
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="first_name" style="display: block; font-weight: bold; color: #ffe600; margin-bottom: 0.5rem;">Nombre:</label>
+            <input type="text" id="first_name" name="first_name" required style="width: 100%; padding: 0.8rem; border: 2px solid #ffd600; border-radius: 0.5rem; background: #232323; color: #ffe600;">
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="apellido" style="display: block; font-weight: bold; color: #ffe600; margin-bottom: 0.5rem;">Apellido:</label>
+            <input type="text" id="apellido" name="apellido" required style="width: 100%; padding: 0.8rem; border: 2px solid #ffd600; border-radius: 0.5rem; background: #232323; color: #ffe600;">
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="email" style="display: block; font-weight: bold; color: #ffe600; margin-bottom: 0.5rem;">Email:</label>
+            <input type="email" id="email" name="email" required style="width: 100%; padding: 0.8rem; border: 2px solid #ffd600; border-radius: 0.5rem; background: #232323; color: #ffe600;">
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="telefono" style="display: block; font-weight: bold; color: #ffe600; margin-bottom: 0.5rem;">Teléfono:</label>
+            <input type="text" id="telefono" name="telefono" required style="width: 100%; padding: 0.8rem; border: 2px solid #ffd600; border-radius: 0.5rem; background: #232323; color: #ffe600;">
+        </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="direccion" style="display: block; font-weight: bold; color: #ffe600; margin-bottom: 0.5rem;">Dirección:</label>
+            <input type="text" id="direccion" name="direccion" required style="width: 100%; padding: 0.8rem; border: 2px solid #ffd600; border-radius: 0.5rem; background: #232323; color: #ffe600;">
+        </div>
+        <button type="submit" style="background: #ffe600; color: #232323; font-weight: bold; padding: 0.8rem 1.5rem; border: none; border-radius: 0.5rem; cursor: pointer; transition: background 0.2s;">
+            Añadir Cliente
+        </button>
+    </form>
+</div>
+{% endblock %}

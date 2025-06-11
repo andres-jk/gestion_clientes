@@ -1,0 +1,53 @@
+{% extends "clientes/base.html" %}
+{% block title %}Administrar Productos{% endblock %}
+{% block content %}
+<div class="main-card" style="padding:2.5rem 2rem;">
+    <h1 style="margin-bottom:2rem; text-align:center; font-size:2em; letter-spacing:1px;">Administrar Productos</h1>
+    <a href="{% url 'clientes:crear_producto' %}" class="btn" style="margin-bottom: 1.5rem;">Añadir Nuevo Producto</a>
+    <div style="overflow-x:auto;">
+        <table style="
+            width:100%;
+            border-collapse:collapse;
+            background:#232323;
+            border-radius: 1.5rem;
+            box-shadow: 0 2px 16px #ffe60022;
+        ">
+            <thead>
+                <tr style="background:#444; color:#ffe600;">
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600; text-align:center;">Nombre</th>
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600; text-align:center;">Descripción</th>
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600; text-align:center;">Precio</th>
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600; text-align:center;">Stock</th>
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600; text-align:center;">Disponible</th>
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600; text-align:center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                <tr style="background: #232323; color: #ffe600;">
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600; font-weight:bold; text-align:center; vertical-align:middle;">{{ producto.nombre }}</td>
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600; max-width:260px; white-space:pre-line; overflow-wrap:break-word; text-align:center; vertical-align:middle;">{{ producto.descripcion|truncatechars:60 }}</td>
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600; text-align:center; vertical-align:middle;">${{ producto.precio|floatformat:2 }}</td>
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600; text-align:center; vertical-align:middle;">{{ producto.stock }}</td>
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600; text-align:center; vertical-align:middle;">
+                        {% if producto.disponible %}
+                            <span class="capsule">Sí</span>
+                        {% else %}
+                            <span class="capsule-dark">No</span>
+                        {% endif %}
+                    </td>
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600; text-align:center; vertical-align:middle;">
+                        <a href="{% url 'clientes:editar_producto' producto.id %}" class="btn btn-secondary" style="margin-bottom:4px;">Editar</a>
+                        <a href="{% url 'clientes:eliminar_producto' producto.id %}" class="btn btn-danger" onclick="return confirm('¿Seguro que deseas eliminar este producto?');">Eliminar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="text-align:center; color:#ffe600; padding:18px;">No hay productos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

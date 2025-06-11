@@ -1,0 +1,15 @@
+{% extends 'clientes/base.html' %}
+{% block title %}{{ accion }} Producto{% endblock %}
+{% block content %}
+<div class="main-card" style="max-width: 600px; margin: 2rem auto;">
+    <h2 style="text-align:center; margin-bottom:2rem;">{{ accion }} Producto</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div style="display:flex; gap:1rem; justify-content:center; margin-top:2rem;">
+            <button type="submit" class="btn" style="min-width:120px;">{{ accion }}</button>
+            <a href="{% url 'clientes:productos_admin' %}" class="btn btn-secondary" style="min-width:120px;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

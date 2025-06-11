@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Devoluciones{% endblock %}
+{% block content %}
+<div class="main-card mt-5" style="max-width:700px;margin:0 auto;">
+    <h2 style="color:#ffe600;">Devoluciones - Pedido #{{ pedido.id }}</h2>
+    {% if devoluciones %}
+        {% for devolucion in devoluciones %}
+            <div style="border:1px solid #ffe600; margin-bottom:1.5em; padding:1em;">
+                <p><strong>Fecha:</strong> {{ devolucion.fecha|date:"d/m/Y H:i" }}</p>
+                <p><strong>Observaciones:</strong> {{ devolucion.observaciones }}</p>
+                <h4>Productos devueltos</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prod in devolucion.productos.all %}
+                        <tr>
+                            <td>{{ prod.producto.nombre }}</td>
+                            <td>{{ prod.cantidad }}</td>
+                            <td>{{ prod.estado }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+        <a href="{% url 'clientes:devolucion_pdf' pedido.id %}" class="btn btn-secondary">Descargar PDF</a>
+    {% else %}
+        <p>No hay devoluciones registradas para este pedido.</p>
+    {% endif %}
+</div>
+{% endblock %}

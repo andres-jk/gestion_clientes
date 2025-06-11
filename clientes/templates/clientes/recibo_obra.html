@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Recibo de Obra{% endblock %}
+{% block content %}
+<div class="main-card mt-5" style="max-width:700px;margin:0 auto;">
+    <h2 style="color:#ffe600;">Recibo de Obra{% if pedido_id %} - Pedido #{{ pedido_id }}{% elif pedido %} - Pedido #{{ pedido.id }}{% endif %}</h2>
+    {% if pedido_no_existe %}
+        <div class="alert alert-danger" style="color:#b30000; background:#fffbe6; border:2px solid #b30000;">
+            No existe un pedido con el ID proporcionado.
+        </div>
+    {% elif form %}
+        <form method="post" id="recibo-obra-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <h4>Productos entregados en este pedido:</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Estado</th>
+                        <th>Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prod in pedido.productos.all %}
+                    <tr>
+                        <td>{{ prod.nombre }}</td>
+                        <td>{{ prod.cantidad }}</td>
+                        <td>
+                            <select name="estado_producto_{{ prod.id }}" class="form-select">
+                                <option value="completo">Completo</option>
+                                <option value="con_danios">Con daños</option>
+                                <option value="danado">Dañado completamente</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" name="observaciones_producto_{{ prod.id }}" class="form-control" placeholder="Observaciones...">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div style="margin-bottom:1em;">
+                <label><strong>Firma digital:</strong></label>
+                <br>
+                <canvas id="firma-canvas" width="350" height="120" style="border:1px solid #ccc;"></canvas>
+                <input type="hidden" name="firma" id="firma-input">
+                <button type="button" onclick="limpiarFirma()" class="btn btn-secondary btn-sm" style="margin-top:0.5em;">Limpiar firma</button>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar Recibo</button>
+        </form>
+        {% if recibo and recibo.id %}
+        <div style="margin-top:1.5rem;">
+            <a href="{% url 'clientes:recibo_obra_pdf' pedido.id %}" class="btn btn-secondary">Descargar PDF</a>
+        </div>
+        {% endif %}
+    {% endif %}
+</div>
+<script>
+// Solo ejecuta el código JS si existe el canvas (es decir, si hay formulario)
+document.addEventListener('DOMContentLoaded', function() {
+    var canvas = document.getElementById('firma-canvas');
+    var form = document.getElementById('recibo-obra-form');
+    if (canvas && form) {
+        var ctx = canvas.getContext('2d');
+        let dibujando = false;
+        canvas.addEventListener('mousedown', function(e) { dibujando = true; ctx.beginPath(); });
+        canvas.addEventListener('mouseup', function(e) { dibujando = false; });
+        canvas.addEventListener('mouseout', function(e) { dibujando = false; });
+        canvas.addEventListener('mousemove', function(e) {
+            if (!dibujando) return;
+            const rect = canvas.getBoundingClientRect();
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#222';
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        });
+        window.limpiarFirma = function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        form.addEventListener('submit', function(e) {
+            var firmaInput = document.getElementById('firma-input');
+            firmaInput.value = canvas.toDataURL();
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+{% load clientes_tags %}
+{% block title %}Pedidos Realizados{% endblock %}
+{% block content %}
+
+
+<style>
+    .pedidos-main-card {
+        background: #fff;
+        border-radius: 1.5rem;
+        box-shadow: 0 4px 24px #ffd50086;
+        border: 3px solid #ffd600;
+        padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+        margin: 2rem auto 0 auto;
+        max-width: 1450px;
+        min-width: 0;
+        width: 99vw;
+    }
+    .pedidos-table-container {
+        width: 100%;
+        overflow-x: auto;
+        margin: 0 auto;
+        background: transparent;
+        border-radius: 1.5rem;
+        box-shadow: none;
+        border: none;
+        padding: 0;
+    }
+    .excel-table {
+        width: 100%;
+        min-width: 1200px;
+        border-collapse: collapse;
+        background: #fff;
+        color: #111;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        font-size: 15px;
+        box-shadow: none;
+        margin: 0;
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+    .excel-table th {
+        background: #ffe600;
+        color: #181818;
+        font-weight: 700;
+        border: 1px solid #ffe600;
+        padding: 6px 8px;
+        text-align: left;
+        border-radius: 0;
+        font-size: 1em;
+        white-space: nowrap;
+    }
+    .excel-table td {
+        background: #fff !important;
+        color: #181818 !important;
+        border: 1px solid #ffe600;
+        padding: 4px 8px;
+        text-align: left;
+        border-radius: 0;
+        max-width: 260px;
+        word-break: break-word;
+        white-space: pre-line;
+        font-size: 0.98em;
+        vertical-align: middle;
+    }
+    .excel-table tr:nth-child(even) td {
+        background: #f9fafb !important;
+    }
+    .excel-table tr:hover td {
+        background: #fffbe6 !important;
+    }
+    .section-title {
+        margin-bottom: 0.7rem !important;
+        font-size: 1.5rem;
+        color: #ffe600 !important; /* Cambiado a amarillo */
+        font-weight: bold;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    @media (max-width: 1500px) {
+        .pedidos-main-card, .pedidos-table-container, .excel-table {
+            max-width: 99vw;
+            min-width: 0;
+        }
+        .excel-table th, .excel-table td {
+            font-size: 13px;
+            padding: 4px 4px;
+        }
+    }
+    @media (max-width: 900px) {
+        .pedidos-main-card {
+            padding: 0.7rem 0.1rem 0.7rem 0.1rem;
+        }
+        .excel-table th, .excel-table td {
+            font-size: 12px;
+            padding: 3px 2px;
+        }
+    }
+    .btn-ver-detalle {
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 4px 14px;
+        font-weight: 600;
+        transition: background 0.2s, color 0.2s;
+        margin: 0 2px;
+        text-decoration: none;
+        display: inline-block;
+        box-shadow: 0 2px 8px #2563eb22;
+    }
+    .btn-ver-detalle:hover {
+        background: #1d4ed8;
+        color: #fff;
+    }
+</style>
+<div class="pedidos-main-card">
+    <h2 class="section-title">Pedidos Realizados</h2>
+    <div class="pedidos-table-container">
+        <table class="excel-table table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Pedido #</th>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Ubicación</th>
+                    <th>Dirección de entrega</th>
+                    <th>Método de pago</th>
+                    <th>Total</th>
+                    <th>Fecha</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Tipo de renta</th>
+                    <th>Duración</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if pedidos_info %}
+                    {% for pedido_info in pedidos_info %}
+                        {% for prod in pedido_info.productos %}
+                        <tr>
+                            {% if forloop.first %}
+                                <td rowspan="{{ pedido_info.productos|length }}">{{ pedido_info.pedido.id }}</td>
+                                <td rowspan="{{ pedido_info.productos|length }}">
+                                    {{ pedido_info.pedido.usuario.cliente.dni }}
+                                </td>
+                                <td rowspan="{{ pedido_info.productos|length }}">{{ pedido_info.pedido.usuario.username }}</td>
+                                <td rowspan="{{ pedido_info.productos|length }}">{{ pedido_info.pedido.ubicacion }}</td>
+                                <td rowspan="{{ pedido_info.productos|length }}">{{ pedido_info.direccion_obra }}</td>
+                                <td rowspan="{{ pedido_info.productos|length }}">{{ pedido_info.pedido.metodo_pago }}</td>
+                                <td rowspan="{{ pedido_info.productos|length }}">${{ pedido_info.pedido.total|floatformat:0|miles_colombianos }} COP</td>
+                                <td rowspan="{{ pedido_info.productos|length }}">{{ pedido_info.pedido.fecha|date:"d/m/Y H:i" }}</td>
+                            {% endif %}
+                            <td>{{ prod.nombre }}</td>
+                            <td>{{ prod.cantidad }}</td>
+                            <td>{{ prod.tipo_renta|title }}</td>
+                            <td>
+                                {{ prod.duracion }}
+                                {% if prod.tipo_renta == "semana" %}
+                                    {% if prod.duracion|add:"0" > 1 %}semanas{% else %}semana{% endif %}
+                                {% else %}
+                                    {% if prod.duracion|add:"0" > 1 %}meses{% else %}mes{% endif %}
+                                {% endif %}
+                            </td>
+                            {% if forloop.first %}
+                                <td rowspan="{{ pedido_info.productos|length }}" style="vertical-align:middle; text-align:center;">
+                                    <a href="{% url 'clientes:remision' pedido_info.pedido.id %}" class="btn-ver-detalle">Ver Remisión</a>
+                                    <a href="{% url 'clientes:factura' pedido_info.pedido.id %}" class="btn-ver-detalle">Ver Factura</a>
+                                    <a href="{% url 'clientes:devolucion' pedido_info.pedido.id %}" class="btn-ver-detalle">Ver Devolución</a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="13" style="text-align:center; color:#ffe600;">No hay información de pedidos.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div style="margin-top:1rem; text-align:center;">
+    </div>
+</div>
+{% endblock %}

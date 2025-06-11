@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recibo de Obra</title>
+    <style>
+        body { font-family: Arial, sans-serif; color: #222; background: #fff; }
+        .recibo-container { max-width: 700px; margin: 30px auto; border: 1px solid #ffe600; background: #fff; padding: 30px; }
+        h2 { color: #ffe600; }
+        table { width: 100%; margin-bottom: 1.5em; border-collapse: collapse; }
+        td { padding: 6px 10px; }
+        .label { font-weight: bold; color: #444; width: 180px; }
+        .section-title { color: #ffe600; font-size: 1.1em; margin: 18px 0 8px 0; border-bottom: 1px solid #ffe600; padding-bottom: 2px; }
+    </style>
+</head>
+<body>
+<div class="recibo-container">
+    <h2>Recibo de Obra - Pedido #{{ pedido.id }}</h2>
+    <table>
+        <tr><td class="label">Fecha:</td><td>{{ recibo.fecha|date:"d/m/Y H:i" }}</td></tr>
+        <tr><td class="label">Nombre quien recibe:</td><td>{{ recibo.nombre_recibe }}</td></tr>
+        <tr><td class="label">Cédula quien recibe:</td><td>{{ recibo.cedula_recibe }}</td></tr>
+        <tr><td class="label">Estado productos:</td><td>{{ recibo.estado_productos }}</td></tr>
+        <tr><td class="label">Observaciones:</td><td>{{ recibo.observaciones }}</td></tr>
+        <tr><td class="label">Firma:</td><td>{% if recibo.firma %}<img src="{{ recibo.firma }}" alt="Firma" style="max-width:250px;max-height:80px;"/>{% endif %}</td></tr>
+    </table>
+</div>
+</body>
+</html>

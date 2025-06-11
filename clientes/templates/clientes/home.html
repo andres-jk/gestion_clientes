@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load clientes_tags %}
+
+{% block title %}Página de Inicio{% endblock %}
+
+{% block content %}
+<style>
+    .main-card {
+        max-width: 480px;
+        margin: 3rem auto 0 auto;
+        padding: 2.5rem 2.2rem 2rem 2.2rem;
+        border-radius: 2rem;
+        background: #232323;
+        border: 2.5px solid #ffe600;
+        box-shadow: 0 6px 32px 0 #ffe60033, 0 1.5px 8px #0008;
+    }
+    .main-title {
+        color: #ffe600;
+        font-size: 2.2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 2.2rem;
+        border-left: 8px solid #ffe600;
+        padding-left: 1.2rem;
+        border-radius: 1.2rem;
+        box-shadow: 0 2px 8px #ffe60022;
+    }
+    .nav-btn {
+        display: block;
+        width: 100%;
+        background: #181818;
+        color: #ffe600 !important;
+        font-weight: bold;
+        border-radius: 2rem;
+        padding: 0.8em 0;
+        font-size: 1.13em;
+        border: 2.5px solid #181818;
+        text-decoration: none;
+        text-align: center;
+        margin: 0 auto;
+        margin-bottom: 0.7rem;
+        box-shadow: 0 2px 8px #ffe60022;
+        transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+    }
+    .nav-btn:hover, .nav-btn:focus {
+        background: #232323;
+        color: #ffe600 !important;
+        box-shadow: 0 0 12px #ffe60088;
+        text-decoration: none;
+    }
+    .capsule, .capsule-dark {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 0.4em 1.4em;
+        font-weight: bold;
+        font-size: 1em;
+        margin: 0.2em 0.5em 0.2em 0;
+        letter-spacing: 0.5px;
+    }
+    .capsule {
+        background: #ffe600;
+        color: #181818;
+        border: 2px solid #181818;
+        box-shadow: 0 2px 8px #ffe60044;
+    }
+    .capsule-dark {
+        background: #232323;
+        color: #ffe600;
+        border: 2px solid #ffe600;
+        box-shadow: 0 2px 8px #18181844;
+    }
+    .section-separator {
+        border: none;
+        border-top: 2.5px solid #ffe600;
+        margin: 2rem 0;
+        opacity: 1;
+    }
+    ul.func-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        margin-top: 1.2rem;
+    }
+    ul.func-list li {
+        margin-bottom: 1.1rem;
+    }
+    @media (max-width: 600px) {
+        .main-card {
+            max-width: 98vw;
+            padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+        }
+        .main-title {
+            font-size: 1.3rem;
+            padding-left: 0.7rem;
+        }
+        .nav-btn {
+            font-size: 1em;
+            padding: 0.7em 0;
+        }
+    }
+</style>
+<div class="main-card mt-5">
+    <h2 class="main-title mb-4">Inicio</h2>
+    {% if user.is_authenticated %}
+        <p class="mb-3" style="text-align:center;">Hola, <strong>{{ user.username }}</strong>!</p>
+        <div style="text-align:center;">
+            {% if user|has_group:'Empleados' %}
+                <span class="capsule-dark mb-3">Empleado</span>
+            {% else %}
+                <span class="capsule mb-3">Cliente</span>
+            {% endif %}
+        </div>
+        <div class="mb-4" style="text-align:center;">
+            <a href="{% url 'logout' %}" class="nav-btn" style="max-width:220px;">Cerrar Sesión</a>
+        </div>
+    {% else %}
+        <div class="mb-4" style="text-align:center;">
+            Por favor,
+            <a href="{% url 'login' %}" class="nav-btn" style="max-width:220px; display:inline-block;">Inicia sesión</a>
+            o
+            <a href="{% url 'clientes:register' %}" class="nav-btn" style="max-width:220px; display:inline-block;">Regístrate</a>.
+        </div>
+    {% endif %}
+
+    <hr class="section-separator" />
+    <p class="mb-2" style="text-align:center;">Explora nuestras funcionalidades:</p>
+    <ul class="func-list">
+        <li><a href="{% url 'clientes:lista_clientes' %}" class="nav-btn">Lista de Clientes</a></li>
+        <li><a href="{% url 'clientes:catalogos' %}" class="nav-btn">Catálogos</a></li>
+        <li><a href="{% url 'clientes:carrito' %}" class="nav-btn">Carrito</a></li>
+        <li><a href="{% url 'clientes:pedidos' %}" class="nav-btn">Pedidos</a></li>
+        <!-- Agrega más enlaces si tienes más apartados -->
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load clientes_tags %}
+{% block title %}Registrar Devolución{% endblock %}
+{% block content %}
+<div class="main-card mt-5" style="max-width:700px;margin:0 auto;">
+    <h2 style="color:#ffe600;">Registrar Devolución - Pedido #{{ pedido.id }}</h2>
+    <p><strong>Productos entregados en este pedido:</strong></p>
+    <table class="table table-bordered" style="margin-bottom:1.5em;">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad entregada</th>
+                <th>Tipo de renta</th>
+                <th>Duración</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prod in pedido.productos.all %}
+            <tr>
+                <td>{{ prod.nombre }}</td>
+                <td>{{ prod.cantidad }}</td>
+                <td>{{ prod.tipo_renta|title }}</td>
+                <td>{{ prod.duracion }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form method="post">
+        {% csrf_token %}
+        {{ devolucion_form.as_p }}
+        <h4>Productos a devolver</h4>
+        {{ formset.management_form }}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad a devolver</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for form in formset %}
+                <tr>
+                    <td>{{ form.producto }}</td>
+                    <td>
+                        {% with prod_id=form.initial.producto.id %}
+                        <input type="number" name="{{ form.prefix }}-cantidad" min="0" max="{{ max_cantidades|get_item:prod_id }}" value="{{ form.initial.cantidad }}" class="form-control" required>
+                        {% endwith %}
+                    </td>
+                    <td>{{ form.estado }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Registrar Devolución</button>
+    </form>
+</div>
+{% endblock %}

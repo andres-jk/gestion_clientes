@@ -1,0 +1,16 @@
+{% extends 'clientes/base.html' %}
+{% load static %}
+{% load clientes_tags %}
+
+{% block title %}Bienvenido a Multiandamios{% endblock %}
+
+{% block content %}
+<div class="main-card" style="max-width:900px; margin:3rem auto 0 auto; background:#2a2a27; box-shadow:0 0 32px 6px #ffe60055;">
+    <h1 style="font-size:2.6em; font-weight:bold; color:#ffe600; margin-bottom:1.1rem;">Bienvenido a Multiandamios</h1>
+    <p style="font-size:1.25em; color:#ffe600; margin-bottom:1.2rem;">
+        Somos líderes en alquiler y venta de andamios y formaletas metálicas.<br>
+        Explora nuestros servicios y productos, o solicita tu cotización.
+    </p>
+    <a href="{% url 'clientes:catalogos' %}" style="font-size:1.15em; font-weight:bold; color:#ffe600; text-decoration:underline;">Ver productos</a>
+</div>
+{% endblock %}

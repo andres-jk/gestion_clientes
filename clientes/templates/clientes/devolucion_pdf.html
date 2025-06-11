@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Devolución de Productos</title>
+    <style>
+        body { font-family: Arial, sans-serif; color: #222; background: #fff; }
+        .devolucion-container { max-width: 700px; margin: 30px auto; border: 1px solid #ffe600; background: #fff; padding: 30px; }
+        h2 { color: #ffe600; }
+        table { width: 100%; margin-bottom: 1.5em; border-collapse: collapse; }
+        th, td { padding: 6px 10px; border: 1px solid #ffe600; }
+        th { background: #ffe600; color: #222; }
+        .label { font-weight: bold; color: #444; width: 180px; }
+    </style>
+</head>
+<body>
+<div class="devolucion-container">
+    <h2>Devoluciones - Pedido #{{ pedido.id }}</h2>
+    {% for devolucion in devoluciones %}
+        <div style="margin-bottom:1.5em;">
+            <p><strong>Fecha:</strong> {{ devolucion.fecha|date:"d/m/Y H:i" }}</p>
+            <p><strong>Observaciones:</strong> {{ devolucion.observaciones }}</p>
+            <h4>Productos devueltos</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prod in devolucion.productos.all %}
+                    <tr>
+                        <td>{{ prod.producto.nombre }}</td>
+                        <td>{{ prod.cantidad }}</td>
+                        <td>{{ prod.estado }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+</div>
+</body>
+</html>

@@ -1,0 +1,183 @@
+{% extends "clientes/base.html" %}
+{% load clientes_tags %}
+{% block title %}Carrito{% endblock %}
+{% block content %}
+<div class="main-card mt-5">
+    <h2 style="margin-bottom: 2rem; text-align:center;">Carrito de Compras</h2>
+    {% if carrito_items %}
+    <style>
+        .btn.btn-calcular-envio {
+            background: #181818 !important;
+            color: #fff !important;
+            border: 1.5px solid #ffe600 !important;
+            font-weight: bold;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            margin-top: -20px;
+            padding: 0.7em 1.5em;
+            box-shadow: 0 2px 8px #ffe60022;
+            border-radius: 2rem;
+            transition: background 0.18s, color 0.18s;
+        }
+        .btn.btn-calcular-envio:hover,
+        .btn.btn-calcular-envio:focus {
+            background: #232323 !important;
+            color: #ffe600 !important;
+        }
+        .btn.btn-finalizar-pedido {
+            background: #fff !important;
+            color: #181818 !important;
+            border: 2px solid #ffe600 !important;
+            font-weight: bold;
+            border-radius: 2rem;
+            box-shadow: 0 2px 8px #ffe60022;
+            width: 100%;
+            font-size: 1.1em;
+            transition: background 0.18s, color 0.18s;
+        }
+        .btn.btn-finalizar-pedido:hover,
+        .btn.btn-finalizar-pedido:focus {
+            background: #ffe600 !important;
+            color: #181818 !important;
+        }
+    </style>
+    <form method="get" style="margin-bottom: 2rem; display: flex; justify-content: flex-end; gap: 1rem; align-items: center;">
+        <label for="ubicacion" style="font-weight:bold; margin-right:8px;">Ubicación de envío:</label>
+        <select name="ubicacion" id="ubicacion" class="form-control" style="max-width:220px;">
+            <option value="bogota" {% if request.GET.ubicacion == "bogota" %}selected{% endif %}>Bogotá</option>
+            <option value="cundinamarca" {% if request.GET.ubicacion == "cundinamarca" %}selected{% endif %}>Cundinamarca</option>
+            <option value="otra" {% if request.GET.ubicacion == "otra" %}selected{% endif %}>Otra ciudad</option>
+        </select>
+        <button type="submit" class="btn btn-calcular-envio">Calcular Envío</button>
+    </form>
+    <div style="overflow-x:auto;">
+        <table style="
+            width:100%;
+            border-collapse:separate;
+            border-spacing:0;
+            background: #fff;
+            color: #181818;
+            font-size: 1.08em;
+            box-shadow: 0 4px 24px #ffd60033;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 3px solid #ffd600;
+        ">
+            <thead>
+                <tr style="background:#222; color:#ffe600;">
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600;">Producto</th>
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600;">Cantidad</th>
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600;">Tipo de renta</th>
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600;">Duración</th>
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600;">Precio</th>
+                    <th style="padding:14px 10px; border-bottom:2.5px solid #ffd600;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in carrito_items %}
+                <tr{% if forloop.counter0|divisibleby:'2' %} style="background-color:#fff; color:#181818;"{% else %} style="background-color:#f7f7f7; color:#181818;"{% endif %}>
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600;">{{ item.producto.nombre }}</td>
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600;">{{ item.cantidad }}</td>
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600;">
+                        {% if item.tipo_renta == 'semana' %}Semana{% else %}Mes{% endif %}
+                    </td>
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600;">{{ item.duracion }}</td>
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600;">
+                        ${{ item.precio_unitario|floatformat:0|miles_colombianos }}
+                    </td>
+                    <td style="padding:12px 10px; border-bottom:1.5px solid #ffd600;">
+                        ${{ item.subtotal|floatformat:0|miles_colombianos }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- NUEVO BLOQUE VISUAL PARA TOTALES -->
+    <div style="
+        max-width: 520px;
+        margin: 2.5rem auto 0 auto;
+        background: #222;
+        border-radius: 1.2rem;
+        border: 2.5px solid #ffd600;
+        box-shadow: 0 2px 16px #ffd60033;
+        padding: 1.5rem 2rem 1.2rem 2rem;
+        color: #ffe600;
+        font-size: 1.13em;
+    ">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.7em;">
+            <span style="color:#fff; font-weight: 600;">Subtotal:</span>
+            <span style="color:#fff;">${{ total|floatformat:0|miles_colombianos }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.7em;">
+            <span style="color:#ffe600; font-weight: 600;">IVA ({{ iva_porcentaje }}%):</span>
+            <span style="color:#ffe600;">${{ iva_valor|floatformat:0|miles_colombianos }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.7em;">
+            <span style="color:#fff; font-weight: 600;">Total con IVA:</span>
+            <span style="color:#fff;">${{ total_con_iva|floatformat:0|miles_colombianos }}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.7em;">
+            <span style="color:#ffe600; font-weight: 600;">Envío:</span>
+            <span style="color:#ffe600;">
+                {% if envio is not None %}
+                    ${{ envio|floatformat:0|miles_colombianos }}
+                {% else %}
+                    <span style="color:#bbb;">Selecciona ubicación</span>
+                {% endif %}
+            </span>
+        </div>
+        <div style="height:2px; background:#ffe600; margin:1em 0 1em 0; border-radius:2px;"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size:1.18em; font-weight: bold; color:#ffe600;">Total a pagar:</span>
+            <span style="font-size:1.18em; font-weight: bold; color:#ffe600;">
+                {% if envio is not None %}
+                    ${{ total_envio|floatformat:0|miles_colombianos }}
+                {% else %}
+                    -
+                {% endif %}
+            </span>
+        </div>
+    </div>
+    <!-- FIN BLOQUE VISUAL -->
+    <form method="post" action="{% url 'clientes:procesar_pedido' %}" style="margin-top:2.5rem; max-width:500px; margin-left:auto; margin-right:auto;">
+        {% csrf_token %}
+        <input type="hidden" name="ubicacion" value="{{ request.GET.ubicacion }}">
+        <div style="margin-bottom:1.2rem;">
+            <label for="metodo_pago" style="font-weight:bold;">Método de pago:</label>
+            <select name="metodo_pago" id="metodo_pago" class="form-control" required>
+                <option value="">Seleccione...</option>
+                <option value="transferencia">Transferencia Bancaria</option>
+                <option value="contraentrega">Pago contra entrega</option>
+                <option value="efectivo">Efectivo</option>
+            </select>
+        </div>
+        <div style="margin-bottom:1.2rem;">
+            <label for="direccion_obra" style="font-weight:bold;">Dirección específica de la obra:</label>
+            <input type="text" name="direccion_obra" id="direccion_obra" class="form-control" maxlength="255" placeholder="Ej: Calle 123 #45-67, Barrio, Ciudad">
+        </div>
+        <button type="submit" class="btn btn-finalizar-pedido">Finalizar pedido</button>
+    </form>
+    <!-- Enlace a remisión (solo si hay un pedido generado) -->
+    {% if request.user.is_authenticated and pedidos %}
+        <div style="margin-top:1.5rem; max-width:500px; margin-left:auto; margin-right:auto;">
+            <a href="{% url 'remision' pedidos.0.id %}" class="btn btn-secondary" style="width:100%;margin-bottom:0.5rem;">Ver Remisión</a>
+            <a href="{% url 'remision_pdf' pedidos.0.id %}" class="btn btn-secondary" style="width:100%;">Descargar Remisión PDF</a>
+        </div>
+    {% endif %}
+    <!-- Botón para cancelar compra SIEMPRE visible -->
+    <form action="{% url 'clientes:cancelar_compra' %}" method="get" style="margin-top:1.5rem; max-width:500px; margin-left:auto; margin-right:auto;">
+        <button type="submit" class="btn btn-danger" style="width:100%; font-size:1.1em; background:#b30000; color:#fff; border-radius:2rem; border:2px solid #b30000;">Cancelar compra</button>
+    </form>
+    {% else %}
+    <p style="text-align:center; color:#ffe600;">Tu carrito está vacío.</p>
+    <!-- Botón para cancelar compra SIEMPRE visible aunque el carrito esté vacío -->
+    <form action="{% url 'clientes:cancelar_compra' %}" method="get" style="margin-top:1.5rem; max-width:500px; margin-left:auto; margin-right:auto;">
+        <button type="submit" class="btn btn-danger" style="width:100%; font-size:1.1em; background:#b30000; color:#fff; border-radius:2rem; border:2px solid #b30000;">Cancelar compra</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,166 @@
+{% load clientes_tags %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Remisión #{{ remision.id }}</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #222;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .remision-main {
+            width: 650px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 0;
+        }
+        .logo-box {
+            text-align: center;
+            padding-top: 24px;
+            padding-bottom: 10px;
+        }
+        .logo-img {
+            width: 180px;
+            height: auto;
+        }
+        .remision-header {
+            text-align: center;
+            color: #ffe600;
+            font-size: 2em;
+            margin-bottom: 10px;
+            margin-top: 0;
+            letter-spacing: 1px;
+        }
+        .remision-info {
+            padding: 0 30px 0 30px;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        .info-table td {
+            padding: 4px 8px;
+            font-size: 1em;
+            border: none;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #444;
+            width: 180px;
+        }
+        .remision-section-title {
+            color: #ffe600;
+            font-size: 1.1em;
+            margin: 18px 0 8px 0;
+            border-bottom: 1px solid #ffe600;
+            padding-bottom: 2px;
+        }
+        .remision-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 18px;
+            font-size: 1em;
+        }
+        .remision-table th, .remision-table td {
+            border: 1px solid #ffe600;
+            padding: 7px 8px;
+        }
+        .remision-table th {
+            background: #ffe600;
+            color: #222;
+            font-weight: bold;
+            text-align: left;
+        }
+        .remision-table td {
+            background: #fff;
+            color: #222;
+        }
+        .total-box {
+            background: #f9f9d2;
+            border: 1px solid #ffe600;
+            padding: 10px 15px;
+            margin: 0 30px 18px 30px;
+            font-size: 1.1em;
+            text-align: right;
+        }
+        .observaciones {
+            background: #fffbe6;
+            border: 1px solid #ffe600;
+            padding: 10px 15px;
+            margin: 0 30px 18px 30px;
+            color: #222;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+<div class="remision-main">
+    <div class="logo-box">
+        <img src="{{ STATIC_ROOT }}/img/multiandamios.jpg" class="logo-img" alt="Multiandamios Logo" />
+    </div>
+    <div class="remision-header">
+        Remisión - ID Cliente: {{ remision.pedido.usuario.cliente.dni }}
+    </div>
+    <div class="remision-info">
+        <table class="info-table">
+            <tr><td class="info-label">Fecha:</td><td>{{ remision.fecha|date:"d/m/Y H:i" }}</td></tr>
+            <tr><td class="info-label">Cliente:</td><td>{{ remision.pedido.usuario.first_name }} {{ remision.pedido.usuario.cliente.apellido }}</td></tr>
+            <tr><td class="info-label">Ubicación:</td><td>{{ remision.pedido.ubicacion }}</td></tr>
+            <tr><td class="info-label">Dirección de entrega:</td><td>{{ direccion_obra }}</td></tr>
+            <tr><td class="info-label">Método de pago:</td><td>{{ remision.pedido.metodo_pago }}</td></tr>
+        </table>
+        <div class="remision-section-title">Detalle de productos entregados</div>
+        <table class="remision-table">
+            <thead>
+                <tr>
+                    <th style="width:40%;">Producto</th>
+                    <th style="width:15%;">Cantidad</th>
+                    <th style="width:20%;">Tipo de renta</th>
+                    <th style="width:15%;">Duración</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prod in productos_remision %}
+                <tr>
+                    <td>{{ prod.nombre }}</td>
+                    <td style="text-align:center;">{{ prod.cantidad }}</td>
+                    <td style="text-align:center;">{{ prod.tipo_renta|title }}</td>
+                    <td style="text-align:center;">
+                        {% if prod.duracion %}
+                            {{ prod.duracion }} 
+                            {% if prod.tipo_renta == "semana" %}
+                                {% if prod.duracion|add:"0" > 1 %}semanas{% else %}semana{% endif %}
+                            {% else %}
+                                {% if prod.duracion|add:"0" > 1 %}meses{% else %}mes{% endif %}
+                            {% endif %}
+                        {% else %}
+                            1 mes
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align:center;">No hay productos en esta remisión.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="total-box">
+        <strong>Total a pagar:</strong>
+        $ {{ remision.pedido.total|floatformat:0|miles_colombianos }}  COP
+    </div>
+    {% if remision.observaciones %}
+    <div class="observaciones">
+        <strong>Observaciones:</strong>
+        <div>{{ remision.observaciones }}</div>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>

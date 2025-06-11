@@ -5,8 +5,8 @@ import sys
 
 
 def main():
-    """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gestion_clientes.settings') # <--- Esto es lo que conecta con tu settings.py
+    """Punto de entrada para comandos administrativos de Django."""
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gestion_clientes.settings') # Conecta con settings.py
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

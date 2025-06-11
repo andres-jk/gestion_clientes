@@ -2,20 +2,20 @@
 {% load static %}
 {% load widget_tweaks %}
 
-{% block title %}Iniciar Sesión{% endblock %}
+{% block title %}Registro{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center mt-5">
     <div class="col-md-6 col-lg-4"> {# Columnas para centrar y limitar ancho #}
         <div class="card shadow-sm p-4">
-            <h2 class="card-title text-center mb-4">Iniciar Sesión</h2>
+            <h2 class="card-title text-center mb-4">Registro</h2>
             <form method="post">
                 {% csrf_token %}
 
                 {% for field in form %}
                     <div class="mb-3">
                         <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                        {{ field|add_class:"form-control" }} {# Agrega la clase form-control de Bootstrap #}
+                        {{ field|add_class:"form-control" }}
                         {% if field.help_text %}
                             <div class="form-text">{{ field.help_text }}</div>
                         {% endif %}
@@ -30,14 +30,11 @@
                 {% endfor %}
 
                 <div class="d-grid gap-2 mt-4">
-                    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                    <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
             </form>
             <p class="text-center mt-3">
-                ¿No tienes una cuenta? <a href="{% url 'clientes:register' %}">Regístrate aquí</a>
-            </p>
-            <p class="text-center">
-                <a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a>
+                ¿Ya tienes una cuenta? <a href="{% url 'clientes:login' %}">Inicia sesión aquí</a>
             </p>
         </div>
     </div>

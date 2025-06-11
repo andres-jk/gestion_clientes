@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load clientes_tags %}
+{% block title %}Catálogo de Productos{% endblock %}
+{% block content %}
+<div class="productos-box mt-5">
+    <h2 style="margin-bottom: 2.2rem; text-align:center; font-size:2.2em; letter-spacing:1px;">Catálogo de Productos</h2>
+    <div style="
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 40px;
+        justify-items: center;
+        align-items: stretch;
+        margin-bottom: 1.5rem;
+    ">
+        {% for producto in productos %}
+        <div style="
+            background: linear-gradient(135deg, #232323 80%, #444 100%);
+            border: 2.5px solid #ffd600;
+            border-radius: 22px;
+            min-height: 420px;
+            box-shadow: 0 6px 24px #ffd60033, 0 2px 0 #ffd600 inset;
+            padding: 28px 22px 22px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.13s, box-shadow 0.13s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        " onmouseover="this.style.transform='scale(1.04)';this.style.boxShadow='0 16px 32px #ffe60077';"
+          onmouseout="this.style.transform='';this.style.boxShadow='0 6px 24px #ffd60033, 0 2px 0 #ffd600 inset';">
+            {% if producto.imagen %}
+                <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" style="width: 100%; height: 210px; object-fit: cover; border-radius: 14px; margin-bottom: 18px; box-shadow: 0 2px 12px #ffd60044;">
+            {% else %}
+                <div style="width: 100%; height: 210px; background: #333; border-radius: 14px; margin-bottom: 18px; display: flex; align-items: center; justify-content: center; color: #bbb; font-size:1.2em;">Sin imagen</div>
+            {% endif %}
+            <h4 style="margin: 0 0 12px 0; color: #ffe600; font-size: 1.45em; font-weight: bold; text-align: center; letter-spacing: 0.5px;">
+                {{ producto.nombre }}
+            </h4>
+            <div style="font-size: 1.13em; color: #fffbe6; font-weight: 600; margin-bottom: 8px; text-align: center;">
+                ${{ producto.precio|floatformat:0|miles_colombianos }}
+            </div>
+            <a href="{% url 'clientes:producto_detail' producto.pk %}" class="btn" style="margin-top:auto; width:100%; text-align:center;">Ver Detalle</a>
+        </div>
+        {% empty %}
+        <p style="grid-column:1/-1; text-align:center; color:#ffe600;">No hay productos disponibles.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

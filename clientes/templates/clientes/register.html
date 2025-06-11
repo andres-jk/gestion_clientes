@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Registro de Usuario{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Registro de Usuario</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <!-- Dirección específica de la obra -->
+        <div class="form-group">
+            <label for="direccion_obra">Dirección específica de la obra (opcional):</label>
+            <input type="text" name="direccion_obra" id="direccion_obra" class="form-control" maxlength="255" placeholder="Ej: Calle 123 #45-67, Barrio, Ciudad">
+        </div>
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+    </form>
+</div>
+{% endblock %}

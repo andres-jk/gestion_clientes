@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load clientes_tags %} 
+{# Aquí cargas tu librería de tags #}
+
+{% block title %}Página de Inicio{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>Bienvenido a la Gestión de Clientes</h1>
+        {% if user.is_authenticated %}
+            <p>Hola, {{ user.username }}!</p>
+            {% if user|has_group:'Empleados' %}
+                <p>¡Eres un empleado!</p>
+            {% else %}
+                <p>No eres un empleado.</p>
+            {% endif %}
+            <p><a href="{% url 'logout' %}">Cerrar Sesión</a></p>
+        {% else %}
+            <p>Por favor, <a href="{% url 'login' %}">inicia sesión</a> o <a href="{% url 'clientes:register' %}">regístrate</a>.</p>
+        {% endif %}
+
+        {# Aquí puedes añadir más contenido específico de tu página de inicio #}
+        <p>Esta es la página de inicio de tu aplicación.</p>
+        <p>Explora nuestras funcionalidades:</p>
+        <ul>
+            <li><a href="{% url 'clientes:lista_clientes' %}">Ver Clientes</a></li>
+            {# <li><a href="{% url 'clientes:dashboard' %}">Ir al Dashboard</a></li> #}
+        </ul>
+    </div>
+{% endblock %}

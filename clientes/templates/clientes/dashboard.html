@@ -1,0 +1,44 @@
+{% extends "clientes/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="main-card">
+    <h1 class="mb-4" style="color:#ffe600;">Bienvenido a la Gestión de Clientes</h1>
+    <p>Hola, {{ user.username }}!</p>
+    {% if not is_user_employee %}
+        <p>No eres un empleado.</p>
+    {% endif %}
+    <p>
+        <a href="{% url 'logout' %}">Cerrar Sesión</a>
+    </p>
+    <p>Esta es la página de inicio de tu aplicación.</p>
+    <p>Explora nuestras funcionalidades:</p>
+    <div style="border:2px solid #ffe600; border-radius:16px; padding:1.2rem 2rem; color:#ffe600; background:transparent; box-shadow:0 0 16px #ffe60022;">
+        <ul class="dashboard-btn-list" style="color:#ffe600; list-style:none; padding:0; margin:0; display:flex; flex-direction:row; gap:1.5rem; justify-content:center;">
+            <li>
+                <a href="{% url 'clientes:lista_clientes' %}" class="nav-btn" style="color:#181818;">Ver Clientes</a>
+            </li>
+            <li>
+                <a href="{% url 'clientes:dashboard' %}" class="nav-btn" style="color:#181818;">Ir al Dashboard</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<style>
+@media (max-width: 900px) {
+    .dashboard-btn-list {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        align-items: stretch !important;
+    }
+    .dashboard-btn-list li {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .dashboard-btn-list .nav-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}

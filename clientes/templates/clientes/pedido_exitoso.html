@@ -1,0 +1,20 @@
+{% extends "clientes/base.html" %}
+{% load clientes_tags %}
+{% block title %}Pedido Exitoso{% endblock %}
+{% block content %}
+<div class="main-card mt-5" style="max-width:600px;margin:0 auto;">
+    <h2 style="color:#ffe600;">¡Pedido realizado con éxito!</h2>
+    <p style="margin-top:1.5rem;">Gracias por tu compra.</p>
+    <p><strong>Total a pagar:</strong> ${{ total_envio|floatformat:0|miles_colombianos }}</p>
+    <p><strong>Método de pago:</strong> {{ metodo_pago }}</p>
+    <p><strong>Ubicación de envío:</strong> {{ ubicacion }}</p>
+    <div style="margin-top:2rem;">
+        <a href="{% url 'clientes:remision' pedido.id %}" class="btn btn-secondary" style="width:100%;margin-bottom:0.5rem;">Ver Remisión</a>
+        <a href="{% url 'clientes:remision_pdf' pedido.id %}" class="btn btn-secondary" style="width:100%;margin-bottom:0.5rem;">Descargar Remisión PDF</a>
+        <a href="{% url 'clientes:enviar_remision_correo' pedido.id %}" class="btn btn-secondary" style="width:100%;margin-bottom:0.5rem;">Enviar Remisión por Correo</a>
+    </div>
+    <div style="margin-top:2rem;">
+        <a href="{% url 'clientes:catalogos' %}" class="btn btn-primary" style="width:100%;">Volver a Catálogo</a>
+    </div>
+</div>
+{% endblock %}

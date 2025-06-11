@@ -1,0 +1,333 @@
+/* --- COLORES PRINCIPALES: NEGRO, BLANCO, AMARILLO --- */
+/* Fondo y fuente principal del body */
+body {
+    background-color: #181818; /* Fondo negro */
+    color: #fff;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    min-height: 100vh;
+}
+
+/* Tarjetas principales y contenedores visuales */
+.main-card, .section-card, .form-card, .table-container, .card, .card.shadow-sm, ul, ol {
+    background: #232323;
+    border: 2.5px solid #ffe600;
+    border-radius: 2rem;
+    box-shadow: 0 6px 32px 0 #ffe60033, 0 1.5px 8px #0008;
+    padding: 2.5rem 2.5rem 2rem 2.5rem;
+    margin-bottom: 2.5rem;
+    color: #ffe600;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Etiquetas tipo cápsula (chips) */
+.capsule {
+    display: inline-block;
+    background: #ffe600;
+    color: #181818;
+    border-radius: 999px;
+    padding: 0.4em 1.4em;
+    font-weight: bold;
+    font-size: 1em;
+    margin: 0.2em 0.5em 0.2em 0;
+    border: 2px solid #181818;
+    box-shadow: 0 2px 8px #ffe60044;
+    letter-spacing: 0.5px;
+}
+
+/* Etiquetas tipo cápsula en fondo oscuro */
+.capsule-dark {
+    display: inline-block;
+    background: #232323;
+    color: #ffe600;
+    border-radius: 999px;
+    padding: 0.4em 1.4em;
+    font-weight: bold;
+    font-size: 1em;
+    margin: 0.2em 0.5em 0.2em 0;
+    border: 2px solid #ffe600;
+    box-shadow: 0 2px 8px #18181844;
+    letter-spacing: 0.5px;
+}
+
+/* Títulos de sección y principales */
+.section-title, .main-title {
+    border-left: 8px solid #ffe600;
+    padding-left: 1.2rem;
+    margin-bottom: 2.2rem;
+    color: #ffe600;
+    background: #232323;
+    border-radius: 1.2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    box-shadow: 0 2px 8px #ffe60022;
+}
+
+/* Línea divisoria personalizada */
+hr {
+    border: none;
+    border-top: 2.5px solid #ffe600;
+    margin: 2rem 0;
+    opacity: 1;
+}
+
+/* Tablas generales: fondo, color y bordes */
+.table, .table th, .table td, .table thead {
+    background: #232323 !important;
+    color: #ffe600 !important;
+    border-color: #ffe600 !important;
+    border-radius: 1.2rem;
+}
+
+/* Encabezado de tabla */
+.table thead {
+    background: #444 !important;
+    color: #ffe600 !important;
+    font-weight: bold;
+    border-bottom: 2px solid #ffe600 !important;
+}
+
+/* Filas alternas en tablas (efecto striped) */
+.table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #292929 !important;
+}
+
+/* Efecto hover en filas de tabla */
+.table-hover tbody tr:hover {
+    background-color: #333 !important;
+}
+
+/* Celdas de tabla: color y alineación */
+.table th, .table td {
+    color: #ffe600;
+    vertical-align: middle;
+    border-bottom: 1px solid #ffe600;
+    background: #232323;
+}
+
+/* Checkbox personalizados */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #ffe600;
+}
+
+/* Campos de formulario: fondo, color y bordes */
+.form-control, .form-select, input, select, textarea {
+    background-color: #181818;
+    color: #ffe600;
+    border: 1.5px solid #ffe600;
+    border-radius: 1.2rem;
+    margin-bottom: 1rem;
+    padding: 0.7em 1.2em;
+    font-size: 1em;
+}
+
+/* Efecto focus en campos de formulario */
+.form-control:focus, .form-select:focus, input:focus, select:focus, textarea:focus {
+    background-color: #232323;
+    color: #ffe600;
+    border-color: #ffe600;
+    box-shadow: 0 0 0 0.2rem #ffe60055;
+    outline: none;
+}
+
+/* Etiquetas de formulario */
+.form-label, label {
+    color: #ffe600;
+    font-weight: 600;
+    margin-bottom: 0.4em;
+}
+
+/* Títulos y textos en tarjetas y formularios */
+.card-title, .card-text, .form-label, .alert, h1, h2, h3, h4, h5 {
+    color: #ffe600;
+}
+
+/* Alertas y mensajes flash */
+.alert-success, .alert-info, .alert-warning, .alert-danger, .alert {
+    background: #232323;
+    color: #ffe600 !important;
+    border: 2px solid #ffe600 !important;
+    font-weight: bold;
+    border-radius: 1.2rem !important;
+    box-shadow: 0 2px 8px #ffe60022;
+}
+
+/* Enlaces */
+a, a:visited {
+    color: #ffe600;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* Efecto hover en enlaces */
+a:hover {
+    color: #fff200;
+    text-decoration: underline;
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+    width: 10px;
+    background: #232323;
+}
+::-webkit-scrollbar-thumb {
+    background: #ffe600;
+    border-radius: 10px;
+}
+
+/* Contenedores principales */
+.container, .container-fluid {
+    border-radius: 1.5rem;
+    padding-bottom: 2rem;
+    background: #232323;
+    box-shadow: 0 2px 16px #ffe60022;
+}
+
+/* Espaciado superior */
+.mt-5, .my-5 {
+    margin-top: 3rem !important;
+}
+
+/* Sombra ligera */
+.shadow-sm {
+    box-shadow: 0 2px 8px #ffe60044 !important;
+}
+
+/* Listas personalizadas */
+ul, ol {
+    background: #232323;
+    border-radius: 1.2rem;
+    border: 1.5px solid #ffe600;
+    padding: 1.2rem 2rem;
+    margin-bottom: 2rem;
+    color: #ffe600;
+    box-shadow: 0 2px 8px #ffe60022;
+}
+
+/* Títulos generales */
+h1, h2, h3, h4, h5 {
+    color: #ffe600;
+    font-weight: bold;
+    margin-bottom: 1.2rem;
+}
+
+/* Enlaces de navegación */
+.nav-link {
+    display: inline-block;
+    background: #232323;
+    color: #ffe600 !important;
+    border-radius: 999px;
+    padding: 0.5em 1.5em;
+    font-weight: bold;
+    font-size: 1em;
+    border: 2px solid #ffe600;
+    box-shadow: 0 2px 8px #ffe60022;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s;
+}
+
+/* Efecto activo y hover en enlaces de navegación */
+.nav-link.active,
+.nav-link:hover {
+    background: #ffe600;
+    color: #232323 !important;
+    border: 2px solid #fff200;
+    box-shadow: 0 2px 12px #fff200;
+    text-decoration: none;
+}
+
+/* Fondo y color principal del body (repetido para asegurar consistencia) */
+body {
+    background-color: #181818;
+    color: #fff;
+}
+
+/* Barra de navegación y menú desplegable */
+.navbar, .dropdown-menu {
+    background-color: #181818 !important;
+}
+
+/* Marca de la barra de navegación, enlaces y elementos de menú */
+.navbar-brand, .nav-link, .dropdown-item {
+    color: #ffe600 !important;
+    font-weight: bold;
+}
+
+/* Imagen del logo en la barra de navegación */
+.navbar-brand img {
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 8px;
+    border: 2px solid #ffe600;
+    background: #222;
+}
+
+/* Botones de navegación personalizados */
+.nav-btn {
+    margin-right: 10px;
+    background-color: #ffe600;
+    color: #181818 !important;
+    border: none;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 8px 22px;
+    transition: background 0.2s, color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Efecto hover y activo en botones de navegación */
+.nav-btn:hover, .nav-btn.active {
+    background-color: #fff200;
+    color: #181818 !important;
+    box-shadow: 0 0 8px #fff200;
+    text-decoration: none;
+}
+
+/* Botón hamburguesa del menú responsive */
+.navbar-toggler {
+    border-color: #ffe600;
+}
+
+/* Icono del botón hamburguesa */
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,230,0,1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+/* Encabezado del sitio (logo y alineación) */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+/* Imagen del logo principal */
+.logo img {
+    max-height: 90px;
+    height: auto;
+    width: 180px;
+}
+
+.estado-pagado {
+            color: #1a8917;
+            font-weight: bold;
+        }
+        .estado-pendiente {
+            color: #b30000;
+            font-weight: bold;
+        }
+        
+.estado-pagado {
+            color: #1a8917; /* Verde para pagado */
+            font-weight: bold;
+        }
+        .estado-pendiente {
+            color: #b30000; /* Rojo para pendiente */
+            font-weight: bold;
+        }
+
+        
