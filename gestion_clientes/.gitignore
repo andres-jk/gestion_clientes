@@ -1,0 +1,22 @@
+# Entorno virtual
+venv/
+Lib/
+Scripts/
+share/
+
+# Archivos de Python compilados
+__pycache__/
+*.py[cod]
+
+# Base de datos local
+db.sqlite3
+
+# Archivos del entorno de desarrollo
+*.log
+.env
+
+# Archivos de Django
+*.sqlite3
+*.pyo
+*.pot
+*.pyc
